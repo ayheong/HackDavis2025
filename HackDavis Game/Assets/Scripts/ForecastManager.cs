@@ -11,7 +11,9 @@ public class ForecastManager : MonoBehaviour
     public TimeSeriesLoader loader;
 
     [Header("API Settings")]
-    [SerializeField] private string apiUrl = "http://127.0.0.1:8000/forecast";
+    [SerializeField] private string apiUrl = "https://HackDavis2025-project-api.onrender.com/forecast";
+    [SerializeField] private ForecastVisualizer visualizer;
+
 
     private List<float> heartSeries;
     private List<float> cancerSeries;
@@ -36,18 +38,18 @@ public class ForecastManager : MonoBehaviour
         {
             yield return StartCoroutine(FetchForecast("heart_disease", heartSeries));
             yield return StartCoroutine(FetchForecast("cancer", cancerSeries));
+            visualizer.UpdateLines(heartSeries, cancerSeries);
             yield return new WaitForSeconds(5f);
         }
     }
 
     IEnumerator FetchForecast(string diseaseName, List<float> series)
     {
-        if (series == null || series.Count < 5)
+        if (series == null || series.Count < 10)
         {
-            Debug.LogWarning($"Not enough data for {diseaseName}");
+            Debug.LogWarning($"Not enough data for {diseaseName}, skipping forecast.");
             yield break;
         }
-
         var payload = new
         {
             data = series,
