@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class ForecastVisualizer : MonoBehaviour
@@ -17,7 +18,23 @@ public class ForecastVisualizer : MonoBehaviour
     [SerializeField] private LineRenderer strokeLine;
     [SerializeField] private LineRenderer suicideLine;
     [SerializeField] private LineRenderer diabetesLine;
-    [SerializeField] private LineRenderer totalLine; 
+    [SerializeField] private LineRenderer totalLine;
+
+    [Header("Max Text Boxes")]
+    [SerializeField] private TextMeshProUGUI heartMax;
+    [SerializeField] private TextMeshProUGUI cancerMax;
+    [SerializeField] private TextMeshProUGUI strokeMax;
+    [SerializeField] private TextMeshProUGUI suicideMax;
+    [SerializeField] private TextMeshProUGUI diabetesMax;
+    [SerializeField] private TextMeshProUGUI totalMax;
+
+    [Header("Min Text Boxes")]
+    [SerializeField] private TextMeshProUGUI heartMin;
+    [SerializeField] private TextMeshProUGUI cancerMin;
+    [SerializeField] private TextMeshProUGUI strokeMin;
+    [SerializeField] private TextMeshProUGUI suicideMin;
+    [SerializeField] private TextMeshProUGUI diabetesMin;
+    [SerializeField] private TextMeshProUGUI totalMin;
 
     public void UpdateLines(
         List<float> heartSeries,
@@ -28,15 +45,15 @@ public class ForecastVisualizer : MonoBehaviour
         List<float> totalSeries 
     )
     {
-        if (heartSeries != null) DrawLine(heartGraphArea, heartLine, heartSeries);
-        if (cancerSeries != null) DrawLine(cancerGraphArea, cancerLine, cancerSeries);
-        if (strokeSeries != null) DrawLine(strokeGraphArea, strokeLine, strokeSeries);
-        if (suicideSeries != null) DrawLine(suicideGraphArea, suicideLine, suicideSeries);
-        if (diabetesSeries != null) DrawLine(diabetesGraphArea, diabetesLine, diabetesSeries);
-        if (totalSeries != null) DrawLine(totalGraphArea, totalLine, totalSeries); 
+        if (heartSeries != null) DrawLine(heartGraphArea, heartLine, heartSeries, heartMax, heartMin);
+        if (cancerSeries != null) DrawLine(cancerGraphArea, cancerLine, cancerSeries, cancerMax, cancerMin);
+        if (strokeSeries != null) DrawLine(strokeGraphArea, strokeLine, strokeSeries, strokeMin, strokeMax);
+        if (suicideSeries != null) DrawLine(suicideGraphArea, suicideLine, suicideSeries, suicideMax, suicideMin);
+        if (diabetesSeries != null) DrawLine(diabetesGraphArea, diabetesLine, diabetesSeries, diabetesMax, diabetesMin);
+        if (totalSeries != null) DrawLine(totalGraphArea, totalLine, totalSeries, totalMax, totalMin); 
     }
 
-    void DrawLine(RectTransform graphArea, LineRenderer line, List<float> values)
+    void DrawLine(RectTransform graphArea, LineRenderer line, List<float> values, TextMeshProUGUI maxText, TextMeshProUGUI minText)
     {
         if (values == null || values.Count == 0 || graphArea == null) return;
 
@@ -62,5 +79,7 @@ public class ForecastVisualizer : MonoBehaviour
         line.useWorldSpace = false;
         line.positionCount = positions.Length;
         line.SetPositions(positions);
+        maxText.text = "MAX: " + maxY.ToString("N0");
+        minText.text = "MIN: " + minY.ToString("N0");
     }
 }

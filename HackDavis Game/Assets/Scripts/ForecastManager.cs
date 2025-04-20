@@ -4,6 +4,7 @@ using System.Collections;
 using System.Text;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
+using TMPro;
 
 public class ForecastManager : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class ForecastManager : MonoBehaviour
     [Header("API Settings")]
     [SerializeField] private string apiUrl = "https://HackDavis2025-project-api.onrender.com/forecast";
     [SerializeField] private ForecastVisualizer visualizer;
+
+    [SerializeField] private TextMeshProUGUI yearText;
+    private int year = 2022;
 
     private List<float> heartSeries;
     private List<float> cancerSeries;
@@ -40,6 +44,18 @@ public class ForecastManager : MonoBehaviour
 
     IEnumerator ForecastLoop()
     {
+        UpdateTotalSeries();
+
+        visualizer.UpdateLines(
+                heartSeries,
+                cancerSeries,
+                strokeSeries,
+                suicideSeries,
+                diabetesSeries,
+                totalSeries
+            );
+        yearText.text = "Year: " + year.ToString();
+
         while (true)
         {
             yield return StartCoroutine(FetchForecast("heart_disease", heartSeries));
@@ -58,6 +74,8 @@ public class ForecastManager : MonoBehaviour
                 diabetesSeries,
                 totalSeries
             );
+            year += 1;
+            yearText.text = "Year: " + year.ToString();
 
             yield return new WaitForSeconds(2f);
         }
