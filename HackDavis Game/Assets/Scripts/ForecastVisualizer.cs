@@ -33,7 +33,7 @@ public class ForecastVisualizer : MonoBehaviour
         if (strokeSeries != null) DrawLine(strokeGraphArea, strokeLine, strokeSeries);
         if (suicideSeries != null) DrawLine(suicideGraphArea, suicideLine, suicideSeries);
         if (diabetesSeries != null) DrawLine(diabetesGraphArea, diabetesLine, diabetesSeries);
-        if (totalSeries != null) DrawLine(totalGraphArea, totalLine, totalSeries); // NEW
+        if (totalSeries != null) DrawLine(totalGraphArea, totalLine, totalSeries); 
     }
 
     void DrawLine(RectTransform graphArea, LineRenderer line, List<float> values)
@@ -47,7 +47,7 @@ public class ForecastVisualizer : MonoBehaviour
 
         float minY = Mathf.Min(values.ToArray());
         float maxY = Mathf.Max(values.ToArray());
-        float yRange = Mathf.Max(maxY - minY, 1e-5f); // Prevent div by 0
+        float yRange = Mathf.Max(maxY - minY, 1e-5f); 
 
         Vector3[] positions = new Vector3[values.Count];
 
