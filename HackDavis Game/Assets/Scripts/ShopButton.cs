@@ -16,7 +16,7 @@ public class ShopButton : MonoBehaviour
     void Start()
     {
         item_name_text.text = item_name;
-        price_text.text = "$" + price;
+        price_text.text = "$" + price.ToString("N0");
         amount_text.text = 0.ToString();
     }
 
