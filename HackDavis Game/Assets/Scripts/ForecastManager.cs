@@ -5,6 +5,7 @@ using System.Text;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
 using TMPro;
+using System.Linq;
 
 public class ForecastManager : MonoBehaviour
 {
@@ -42,6 +43,16 @@ public class ForecastManager : MonoBehaviour
         StartCoroutine(ForecastLoop());
     }
 
+    public void ReduceValues(float[] reduce_values)
+    {
+        heartSeries[heartSeries.Count - 1] = Mathf.Max(0.0f, heartSeries[heartSeries.Count - 1] - reduce_values[0]);
+        cancerSeries[cancerSeries.Count - 1] = Mathf.Max(0.0f, cancerSeries[cancerSeries.Count - 1] - reduce_values[1]);
+        strokeSeries[strokeSeries.Count - 1] = Mathf.Max(0.0f, strokeSeries[strokeSeries.Count - 1] - reduce_values[2]);
+        suicideSeries[suicideSeries.Count - 1] = Mathf.Max(0.0f, suicideSeries[suicideSeries.Count - 1] - reduce_values[3]);
+        diabetesSeries[diabetesSeries.Count - 1] = Mathf.Max(0.0f, diabetesSeries[diabetesSeries.Count - 1] - reduce_values[4]);
+        // TODO MIGHT NEED TO UPDATE LINES FOR BETTER GAME FEEL
+    }
+
     IEnumerator ForecastLoop()
     {
         UpdateTotalSeries();
@@ -63,6 +74,8 @@ public class ForecastManager : MonoBehaviour
             yield return StartCoroutine(FetchForecast("stroke", strokeSeries));
             yield return StartCoroutine(FetchForecast("suicide", suicideSeries));
             yield return StartCoroutine(FetchForecast("diabetes", diabetesSeries));
+
+
 
             UpdateTotalSeries();
 
@@ -142,11 +155,12 @@ public class ForecastManager : MonoBehaviour
                 foreach (float val in series) std += Mathf.Pow(val - mean, 2);
                 std = Mathf.Sqrt(std / series.Count);
 
-                float bias = Random.Range(-0.3f, 1.0f); // Mostly positive
+                float bias = Random.Range(-0.8f, 1.0f); // Mostly positive
                 float noise = bias * std * 0.20f;
-                float noisyForecast = response.forecast + noise;
+                float noisyForecast = Mathf.Max(0.0f, response.forecast + noise);
 
                 series.Add(noisyForecast);
+
 
                 if (series.Count > 20)
                     series.RemoveAt(0);

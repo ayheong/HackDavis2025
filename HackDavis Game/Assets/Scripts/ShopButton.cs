@@ -11,13 +11,15 @@ public class ShopButton : MonoBehaviour
     public float price;
     public int amount;
     public float increment_factor;
+    public float[] reduce_values;
+    public ItemController itemController;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         item_name_text.text = item_name;
         price_text.text = "$" + price.ToString("N0");
-        amount_text.text = 0.ToString();
+        amount_text.text = "x" + 0.ToString();
     }
 
     // Update is called once per frame
@@ -30,12 +32,13 @@ public class ShopButton : MonoBehaviour
     {
         UpdateAmount();
         UpdatePrice();
+        itemController.SpawnItem(index);
     }
 
     public void UpdateAmount(int factor = 1)
     {
         amount += factor;
-        amount_text.text = amount.ToString();
+        amount_text.text = "x" + amount.ToString();
     }
 
     public void UpdatePrice(int factor = 1)
@@ -44,6 +47,6 @@ public class ShopButton : MonoBehaviour
         {
             price = Mathf.Ceil(price * increment_factor);
         }
-        price_text.text = "$" + price;
+        price_text.text = "$" + price.ToString("N0");
     }
 }

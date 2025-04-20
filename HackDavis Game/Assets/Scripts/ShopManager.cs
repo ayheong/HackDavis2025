@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,6 +9,8 @@ public class ShopManager : MonoBehaviour
     public TextMeshProUGUI money_text_box;
     public ShopButton[] shop_buttons;
     public DonateButton donate_button;
+
+    public ForecastManager manager;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,7 +29,10 @@ public class ShopManager : MonoBehaviour
     {
         foreach (ShopButton shop_button in shop_buttons)
         {
-            money += shop_button.amount * shop_button.index * Time.deltaTime;
+            if (shop_button.index > 1)
+            {
+                money += shop_button.amount * Mathf.Pow(5, shop_button.index) * Time.deltaTime;
+            }
         }
     }
 
@@ -53,12 +59,20 @@ public class ShopManager : MonoBehaviour
     {
         money -= button.price;
         Debug.Log("You purchased " + button.item_name + " for $" + button.price);
+        manager.ReduceValues(button.reduce_values);
+        if (button.index == 1)
+        {
+            donate_button.amount += Mathf.Ceil(0.01f * button.price * button.increment_factor);
+            donate_button.textBox.text = "$" + donate_button.amount.ToString("N0");
+        }
         button.Purchase();
         // TODO BUY THE ITEM
     }
 
     public void Donate(DonateButton donate_button)
     {
+        Debug.Log("DONATING!");
         money += donate_button.amount;
+        money_text_box.text = "$" + money.ToString("N0");
     }
 }
