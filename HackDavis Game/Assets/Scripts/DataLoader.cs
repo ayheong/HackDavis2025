@@ -8,7 +8,7 @@ public class TimeSeriesLoader : MonoBehaviour
     public Dictionary<string, List<float>> diseaseData = new Dictionary<string, List<float>>();
 
     // List of datasets to load (set from Inspector or hardcoded)
-    public List<string> diseasesToLoad = new List<string> { "heart_disease", "cancer" };
+    public List<string> diseasesToLoad = new List<string> { "heart_disease", "cancer", "stroke", "suicide", "diabetes" };
 
     void Awake()
     {

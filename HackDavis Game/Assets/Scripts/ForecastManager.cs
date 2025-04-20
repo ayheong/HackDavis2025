@@ -17,13 +17,19 @@ public class ForecastManager : MonoBehaviour
 
     private List<float> heartSeries;
     private List<float> cancerSeries;
+    private List<float> strokeSeries;
+    private List<float> suicideSeries;
+    private List<float> diabetesSeries;
 
     void Start()
     {
         heartSeries = loader.GetRecentDeaths("heart_disease");
         cancerSeries = loader.GetRecentDeaths("cancer");
+        strokeSeries = loader.GetRecentDeaths("stroke");
+        suicideSeries = loader.GetRecentDeaths("suicide");
+        diabetesSeries = loader.GetRecentDeaths("diabetes");
 
-        if (heartSeries == null || cancerSeries == null)
+        if (heartSeries == null || cancerSeries == null || strokeSeries == null || suicideSeries == null || diabetesSeries == null)
         {
             Debug.LogError("Failed to load time series data.");
             return;
@@ -38,7 +44,10 @@ public class ForecastManager : MonoBehaviour
         {
             yield return StartCoroutine(FetchForecast("heart_disease", heartSeries));
             yield return StartCoroutine(FetchForecast("cancer", cancerSeries));
-            visualizer.UpdateLines(heartSeries, cancerSeries);
+            yield return StartCoroutine(FetchForecast("stroke", strokeSeries));
+            yield return StartCoroutine(FetchForecast("suicide", suicideSeries));
+            yield return StartCoroutine(FetchForecast("diabetes", diabetesSeries));
+            visualizer.UpdateLines(heartSeries, cancerSeries, strokeSeries, suicideSeries, diabetesSeries);
             yield return new WaitForSeconds(5f);
         }
     }

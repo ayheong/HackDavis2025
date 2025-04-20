@@ -3,20 +3,30 @@ using UnityEngine;
 
 public class ForecastVisualizer : MonoBehaviour
 {
-    [Header("Graph UI Area")]
-    [SerializeField] private RectTransform graphArea;
+    [Header("Graph UI Areas")]
+    [SerializeField] private RectTransform heartGraphArea;
+    [SerializeField] private RectTransform cancerGraphArea;
+    [SerializeField] private RectTransform strokeGraphArea;
+    [SerializeField] private RectTransform suicideGraphArea;
+    [SerializeField] private RectTransform diabetesGraphArea;
 
     [Header("Line Renderers")]
     [SerializeField] private LineRenderer heartLine;
     [SerializeField] private LineRenderer cancerLine;
+    [SerializeField] private LineRenderer strokeLine;
+    [SerializeField] private LineRenderer suicideLine;
+    [SerializeField] private LineRenderer diabetesLine;
 
-    public void UpdateLines(List<float> heartSeries, List<float> cancerSeries)
+    public void UpdateLines(List<float> heartSeries, List<float> cancerSeries, List<float> strokeSeries, List<float> suicideSeries, List<float> diabetesSeries)
     {
-        if (heartSeries != null) DrawLine(heartLine, heartSeries);
-        if (cancerSeries != null) DrawLine(cancerLine, cancerSeries);
+        if (heartSeries != null) DrawLine(heartGraphArea, heartLine, heartSeries);
+        if (cancerSeries != null) DrawLine(cancerGraphArea, cancerLine, cancerSeries);
+        if (strokeSeries != null) DrawLine(strokeGraphArea, strokeLine, strokeSeries);
+        if (suicideSeries != null) DrawLine(suicideGraphArea, suicideLine, suicideSeries);
+        if (diabetesSeries != null) DrawLine(diabetesGraphArea, diabetesLine, diabetesSeries);
     }
 
-    void DrawLine(LineRenderer line, List<float> values)
+    void DrawLine(RectTransform graphArea, LineRenderer line, List<float> values)
     {
         if (values == null || values.Count == 0 || graphArea == null) return;
 
