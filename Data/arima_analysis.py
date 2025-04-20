@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 from pmdarima import auto_arima
 
-# List of CSVs (must be in the same folder as this script)
 diseases = ["heart_disease", "stroke", "diabetes", "suicide", "cancer"]
 
 results = {}
@@ -11,9 +10,8 @@ results = {}
 for disease in diseases:
     print(f"\n=== {disease.upper()} ===")
 
-    # Load CSV
     df = pd.read_csv(f"{disease}.csv")
-    df.columns = df.columns.str.strip()  # Clean up any whitespace
+    df.columns = df.columns.str.strip()
 
     df['Year'] = pd.to_datetime(df['Year'], format='%Y')
     df.set_index('Year', inplace=True)
@@ -28,7 +26,6 @@ for disease in diseases:
     plt.tight_layout()
     plt.show()
 
-    # Auto-set number of lags to max allowed by sample size
     max_lags = max(1, int(len(series) / 2) - 1)  # -1 just to be safe
 
     # Plot ACF and PACF
