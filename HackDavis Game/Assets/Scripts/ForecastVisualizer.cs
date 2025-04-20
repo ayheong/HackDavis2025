@@ -9,6 +9,7 @@ public class ForecastVisualizer : MonoBehaviour
     [SerializeField] private RectTransform strokeGraphArea;
     [SerializeField] private RectTransform suicideGraphArea;
     [SerializeField] private RectTransform diabetesGraphArea;
+    [SerializeField] private RectTransform totalGraphArea; 
 
     [Header("Line Renderers")]
     [SerializeField] private LineRenderer heartLine;
@@ -16,14 +17,23 @@ public class ForecastVisualizer : MonoBehaviour
     [SerializeField] private LineRenderer strokeLine;
     [SerializeField] private LineRenderer suicideLine;
     [SerializeField] private LineRenderer diabetesLine;
+    [SerializeField] private LineRenderer totalLine; 
 
-    public void UpdateLines(List<float> heartSeries, List<float> cancerSeries, List<float> strokeSeries, List<float> suicideSeries, List<float> diabetesSeries)
+    public void UpdateLines(
+        List<float> heartSeries,
+        List<float> cancerSeries,
+        List<float> strokeSeries,
+        List<float> suicideSeries,
+        List<float> diabetesSeries,
+        List<float> totalSeries 
+    )
     {
         if (heartSeries != null) DrawLine(heartGraphArea, heartLine, heartSeries);
         if (cancerSeries != null) DrawLine(cancerGraphArea, cancerLine, cancerSeries);
         if (strokeSeries != null) DrawLine(strokeGraphArea, strokeLine, strokeSeries);
         if (suicideSeries != null) DrawLine(suicideGraphArea, suicideLine, suicideSeries);
         if (diabetesSeries != null) DrawLine(diabetesGraphArea, diabetesLine, diabetesSeries);
+        if (totalSeries != null) DrawLine(totalGraphArea, totalLine, totalSeries); // NEW
     }
 
     void DrawLine(RectTransform graphArea, LineRenderer line, List<float> values)

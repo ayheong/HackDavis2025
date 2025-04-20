@@ -14,12 +14,12 @@ public class ForecastManager : MonoBehaviour
     [SerializeField] private string apiUrl = "https://HackDavis2025-project-api.onrender.com/forecast";
     [SerializeField] private ForecastVisualizer visualizer;
 
-
     private List<float> heartSeries;
     private List<float> cancerSeries;
     private List<float> strokeSeries;
     private List<float> suicideSeries;
     private List<float> diabetesSeries;
+    private List<float> totalSeries = new List<float>();
 
     void Start()
     {
@@ -47,8 +47,36 @@ public class ForecastManager : MonoBehaviour
             yield return StartCoroutine(FetchForecast("stroke", strokeSeries));
             yield return StartCoroutine(FetchForecast("suicide", suicideSeries));
             yield return StartCoroutine(FetchForecast("diabetes", diabetesSeries));
-            visualizer.UpdateLines(heartSeries, cancerSeries, strokeSeries, suicideSeries, diabetesSeries);
-            yield return new WaitForSeconds(5f);
+
+            UpdateTotalSeries();
+
+            visualizer.UpdateLines(
+                heartSeries,
+                cancerSeries,
+                strokeSeries,
+                suicideSeries,
+                diabetesSeries,
+                totalSeries
+            );
+
+            yield return new WaitForSeconds(2f);
+        }
+    }
+
+    void UpdateTotalSeries()
+    {
+        totalSeries.Clear();
+        int count = heartSeries.Count;
+
+        for (int i = 0; i < count; i++)
+        {
+            float total = 0f;
+            if (i < heartSeries.Count) total += heartSeries[i];
+            if (i < cancerSeries.Count) total += cancerSeries[i];
+            if (i < strokeSeries.Count) total += strokeSeries[i];
+            if (i < suicideSeries.Count) total += suicideSeries[i];
+            if (i < diabetesSeries.Count) total += diabetesSeries[i];
+            totalSeries.Add(total);
         }
     }
 
@@ -59,10 +87,11 @@ public class ForecastManager : MonoBehaviour
             Debug.LogWarning($"Not enough data for {diseaseName}, skipping forecast.");
             yield break;
         }
+
         var payload = new
         {
             data = series,
-            order = new[] { 1, 1, 1 }
+            model_name = diseaseName,
         };
 
         string json = JsonConvert.SerializeObject(payload);
@@ -86,7 +115,21 @@ public class ForecastManager : MonoBehaviour
                 ForecastResponse response = JsonConvert.DeserializeObject<ForecastResponse>(request.downloadHandler.text);
                 Debug.Log($"{diseaseName} forecast: {response.forecast}");
 
-                series.Add(response.forecast);
+                // Compute stats
+                float mean = 0f;
+                foreach (float val in series) mean += val;
+                mean /= series.Count;
+
+                float std = 0f;
+                foreach (float val in series) std += Mathf.Pow(val - mean, 2);
+                std = Mathf.Sqrt(std / series.Count);
+
+                float bias = Random.Range(-0.3f, 1.0f); // Mostly positive
+                float noise = bias * std * 0.20f;
+                float noisyForecast = response.forecast + noise;
+
+                series.Add(noisyForecast);
+
                 if (series.Count > 20)
                     series.RemoveAt(0);
             }
