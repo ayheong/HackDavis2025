@@ -79,7 +79,9 @@ public class ForecastVisualizer : MonoBehaviour
         line.useWorldSpace = false;
         line.positionCount = positions.Length;
         line.SetPositions(positions);
+        //maxText.text = "MAX: " + ShopManager.AddCommas(maxY);
         maxText.text = "MAX: " + maxY.ToString("N0");
+        //minText.text = "MIN: " + ShopManager.AddCommas(minY);
         minText.text = "MIN: " + minY.ToString("N0");
     }
 }

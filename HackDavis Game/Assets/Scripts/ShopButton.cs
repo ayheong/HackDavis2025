@@ -18,6 +18,7 @@ public class ShopButton : MonoBehaviour
     void Start()
     {
         item_name_text.text = item_name;
+        price_text.text = "$" + ShopManager.AddCommas(price);
         price_text.text = "$" + price.ToString("N0");
         amount_text.text = "x" + 0.ToString();
     }
@@ -38,7 +39,8 @@ public class ShopButton : MonoBehaviour
     public void UpdateAmount(int factor = 1)
     {
         amount += factor;
-        amount_text.text = "x" + amount.ToString();
+        //amount_text.text = "x" + ShopManager.AddCommas(amount);
+        amount_text.text = "x" + amount.ToString("N0");
     }
 
     public void UpdatePrice(int factor = 1)
@@ -47,6 +49,7 @@ public class ShopButton : MonoBehaviour
         {
             price = Mathf.Ceil(price * increment_factor);
         }
+        //price_text.text = "$" + ShopManager.AddCommas(price);
         price_text.text = "$" + price.ToString("N0");
     }
 }

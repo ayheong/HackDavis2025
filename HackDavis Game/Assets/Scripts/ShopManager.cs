@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,6 +26,38 @@ public class ShopManager : MonoBehaviour
         SetMoneyText();
     }
 
+    public static string AddCommas(float num)
+    {
+        // Turn the float into a string
+        string number = num.ToString();
+
+        // Reverse the string using a loop (avoiding char[])
+        StringBuilder reversed = new StringBuilder();
+        for (int i = number.Length - 1; i >= 0; i--)
+        {
+            reversed.Append(number[i]);
+        }
+
+        // Add commas every 3 digits
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < reversed.Length; i++)
+        {
+            if (i > 0 && i % 3 == 0)
+                result.Append(',');
+
+            result.Append(reversed[i]);
+        }
+
+        // Reverse the final result using string instead of char[]
+        StringBuilder finalString = new StringBuilder();
+        for (int i = result.Length - 1; i >= 0; i--)
+        {
+            finalString.Append(result[i]);
+        }
+
+        return finalString.ToString();
+    }
+
     public void IncrementMoney()
     {
         foreach (ShopButton shop_button in shop_buttons)
@@ -38,6 +71,7 @@ public class ShopManager : MonoBehaviour
 
     public void SetMoneyText()
     {
+        //money_text_box.text = "$" + AddCommas(money);
         money_text_box.text = "$" + money.ToString("N0");
     }
 
@@ -63,6 +97,7 @@ public class ShopManager : MonoBehaviour
         if (button.index == 1)
         {
             donate_button.amount += Mathf.Ceil(0.01f * button.price * button.increment_factor);
+            //donate_button.textBox.text = "$" + AddCommas(donate_button.amount);
             donate_button.textBox.text = "$" + donate_button.amount.ToString("N0");
         }
         button.Purchase();
@@ -73,6 +108,7 @@ public class ShopManager : MonoBehaviour
     {
         Debug.Log("DONATING!");
         money += donate_button.amount;
+        //money_text_box.text = "$" + AddCommas(money);
         money_text_box.text = "$" + money.ToString("N0");
     }
 }

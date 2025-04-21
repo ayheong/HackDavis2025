@@ -666,6 +666,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1787353033}
+        m_TargetAssemblyTypeName: ItemController, Assembly-CSharp
+        m_MethodName: SpawnItem
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &98860810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -718,6 +730,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   amount: 1
   textBox: {fileID: 2115475392}
+  itemController: {fileID: 1787353033}
 --- !u!224 &126372217 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5325071535396979713, guid: c40d8643509ed0f4bb6f662502dbf171, type: 3}
@@ -2951,7 +2964,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fea36268146c4ad4cb42aec212257813, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  money: 2500000
+  money: 3000000
   money_text_box: {fileID: 1567966164}
   shop_buttons:
   - {fileID: 1630072662}
@@ -5616,7 +5629,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!61 &1248767530
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7834,9 +7847,9 @@ MonoBehaviour:
   - {fileID: 5806247343882902020, guid: f14422fe0972f6742b86a49a59c03d34, type: 3}
   - {fileID: 5248415023898783801, guid: cbf58c37249d82a4e97598dfc07d9058, type: 3}
   - {fileID: 568448789392362856, guid: 6e218b04a5fa9ed4fa40b687eaeff8cc, type: 3}
-  leftBound: 640
-  rightBound: 1280
-  spawnY: 1150
+  leftBound: 690
+  rightBound: 1230
+  spawnY: 1080
 --- !u!1 &1790879281
 GameObject:
   m_ObjectHideFlags: 0
